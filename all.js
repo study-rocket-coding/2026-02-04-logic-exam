@@ -62,3 +62,25 @@ function c(){
 }
 
 c();
+
+// 題目四：產業簽到區有寫與沒寫的人數比例為？
+// // input 輸入
+// d()
+
+// // output 範例輸出格式
+// [
+//     ["有寫333人",{
+//      no:"沒寫200人"
+//     }]
+// ]
+
+function d(){
+  const haveDataNum = data.filter((data) => data.company.industry_message !== "").length;
+  const noDataNum = data.filter((data) => data.company.industry_message === "").length;
+  const haveDataMessage = `有寫 ${haveDataNum} 人`;
+  const noDataNumMessage = `沒寫 ${noDataNum} 人`;
+  const count = [haveDataMessage, noDataNumMessage];
+  console.log(count);
+}
+
+d();
