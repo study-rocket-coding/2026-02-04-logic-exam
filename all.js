@@ -41,3 +41,24 @@ function a(){
 }
 
 a();
+
+// 題目三：26~30 年齡族群的平均薪水滿意度為？
+// // input 輸入
+// c()
+
+// // output 範例輸出格式
+// {
+//  average: 7.7   
+// }
+
+function c(){
+  const ageData = data.filter((data) => data.age === '26~30 歲');
+  const total = ageData.reduce((acc, person) => {
+    return acc + Number(person.company.salary_score);
+  }, 0);
+  const length = data.filter((data) => data.age === '26~30 歲').length;
+  const average = total / length;
+  console.log(`average: ${average}`);
+}
+
+c();
