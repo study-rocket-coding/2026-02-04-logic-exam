@@ -167,7 +167,7 @@ const c = () => {
   
   // 加總符合年齡的資料薪資滿意度
   const total = ageData.reduce((acc, user) => {
-    
+
     return acc + Number(user.company.salary_score);
 
     // 初始值為 0
@@ -189,3 +189,44 @@ const c = () => {
 
 // 呼叫函式
 c();
+
+/*
+題目四
+subject：產業簽到區有寫與沒寫的人數比例為？
+
+output：
+[
+    ["有寫333人",{
+     no:"沒寫200人"
+    }]
+]
+*/
+
+// 宣告題目要求的函式
+const d = () => {
+  const count = users.reduce((acc, user) => {
+
+    if (user.company.industry_message === ''){
+      acc.withoutMessage += 1;
+    }
+    else {
+      acc.withMessage += 1;
+    }
+
+    return acc;
+
+  }, { withMessage: 0, withoutMessage: 0 });
+
+  const result = [
+    [
+      `有寫 ${count.withMessage} 人`,
+      { no: `沒寫 ${count.withoutMessage} 人` }
+    ]
+  ];
+
+  // 印出結果
+  console.log(result);
+}
+
+// 呼叫函式
+d();
