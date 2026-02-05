@@ -48,3 +48,103 @@ const getUsers = async () => {
 const users = await getUsers();
 
 // 開始撰寫各道題目
+
+/*
+題目一
+subject：各學歷人數
+
+output：
+{
+    "大專院校畢業": 30,
+    "碩士畢業": 50,
+    ...
+}
+
+---
+
+觀察 output 格式（大專院校畢業、30...）並對照 users 中的欄位。
+
+可以發現題目的要求，其實就是「挑出 user.education，並計算各個種類的數量」。
+*/
+
+// 宣告題目要求的函式
+const a = () => {
+
+  // a 這個函式會包含數個邏輯與步驟，為避免讓函式過長、難以閱讀，我個人習慣：
+  // 1. 用「三個部分」來組織程式碼
+  // 2. 用「小函式」來拆解邏輯，且每個函式只做「一件事」
+  // 3. 撰寫順序：output（先想要什麼結果）-> utils（再想需要哪些工具）-> process（用工具把結果算出來）
+
+  // ------ 1. utils（工具函式） ------
+
+  // 挑出 user.education 欄位：
+  // 1. 函式用動詞開頭（get），説明這個函式的行為（挑出）
+  // 2. 函式名稱要具體，説明挑出的是什麼欄位（User 的 Educations）
+  // 3. 這裡的「參數」 users 是刻意對齊外部的變數 users（説明要傳什麼進來）
+  const getUserEducations = (users) => {
+    // 一般寫法:
+    // 1. 傳進來的參數 users（陣列）會拿來跑 map
+    // 2. 每一個 user（物件）都會被處理，並回傳 user.education
+    // 3. 最後會組成一個新的陣列 educations
+    const educations = users.map((user) => {
+      const education = user.education;
+
+      return education;
+    });
+
+    // 精簡寫法:
+    // const educations = users.map((user) => user.education);
+
+    return educations;
+  };
+
+  // 計算 educations 種類與數量：
+  // 1. 函式用動詞開頭（count），説明這個函式的行為（計算）
+  // 2. 函式名稱要具體，説明計算的是什麼（Educations）
+  // 3. 這裡的「參數」 educations 是刻意對齊上一步驟的變數 educations（説明要傳什麼進來）
+  const countEducations = (educations) => {
+    // 一般寫法:
+    // 1. 傳進來的參數 educations（陣列）會拿來跑 reduce
+    // 2. 每一個 education（字串，例：'大專院校畢業'）都會被處理，並計算各種類別的數量
+    // 3. 累加器命名為 obj（物件），會比 acc 之類的更好理解
+    // 4. 最後會組成一個物件 countedEducations（計算後的 Educations）
+    const countedEducations = educations.reduce((obj, education) => {
+      // obj[education] -> obj['大專院校畢業']
+      if (obj[education]) {
+        // Truthy：如果'大專院校畢業'在 obj 中已存在
+        obj[education]++;
+      } else {
+        // Falsy：如果'大專院校畢業'在 obj 中不存在
+        obj[education] = 1;
+      }
+
+      // 精簡寫法:
+      // obj[education] ? :
+
+      return obj;
+
+    // 初始值為空物件 {}
+    }, {});
+
+    return countedEducations;
+  };
+
+  // ------ 2. process（運算結果） ------
+
+  // 挑出 user.education 的欄位：
+  // 1. 這裡的 users 會取到 a() 函式外的變數
+  // 2. 變數的 educations 命名會對應（函式內 return 什麼，外部就用什麼接）
+  const educations = getUserEducations(users);
+
+  // 計算「後」的 educations 種類與數量
+  const countedEducations = countEducations(educations);
+
+  // ------ 3. output（輸出結果） ------
+
+  // 印出結果
+  console.log(countedEducations);
+  // FYI: return countedEducations
+};
+
+// 最後別忘了呼叫函式
+a();
