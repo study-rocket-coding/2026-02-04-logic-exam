@@ -148,3 +148,44 @@ const a = () => {
 
 // 最後別忘了呼叫函式
 a();
+
+/*
+題目三
+subject：26~30 年齡族群的平均薪水滿意度為？
+
+output：
+{
+ average: 7.7   
+}
+*/
+
+// 宣告題目要求的函式
+const c = () => {
+
+  // 挑出符合年齡的資料
+  const ageData = users.filter((user) => user.age === '26~30 歲');
+  
+  // 加總符合年齡的資料薪資滿意度
+  const total = ageData.reduce((acc, user) => {
+    
+    return acc + Number(user.company.salary_score);
+
+    // 初始值為 0
+  }, 0);
+
+  // 符合年齡的資料數量
+  const count = ageData.length;
+
+  // 計算平均薪水滿意度
+  const average = total / count;
+
+  const result = {
+    average: average,   
+  };
+
+  // 印出結果
+  console.log(result);
+}
+
+// 呼叫函式
+c();
