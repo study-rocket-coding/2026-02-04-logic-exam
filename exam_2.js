@@ -150,6 +150,55 @@ const a = () => {
 a();
 
 /*
+題目二
+subject：各地區工作人士佔比人數
+
+output：
+[
+    {"台灣 - 北北基": "78%"},
+    {"台灣 - 中彰投": "3%"}
+    ...
+]
+*/
+
+// 宣告題目要求的函式
+const b = () => {
+
+  // 計算總人數
+  const total = users.length;
+
+  // 統計各地區人數
+  const areaCount = users.reduce((acc, user) => {
+    const area = user.company.area;
+
+    if (!acc[area]) {
+      acc[area] = 0;
+    }
+
+    acc[area] += 1;
+    return acc;
+  }, {});
+
+  // map 只能用在「陣列」上，先把「物件 → 陣列」
+  // Object.keys 只拿「第一層 key」、回傳陣列
+  const result = Object.keys(areaCount).map((area) => {
+
+    // Math.round 把數字「四捨五入」成最接近的整數
+    const percent = Math.round((areaCount[area] / total) * 100);
+
+    return {
+      [area]: `${percent}%`
+    };
+  });
+
+  // 印出結果
+  console.log(result);
+};
+
+// 呼叫函式
+b();
+
+/*
 題目三
 subject：26~30 年齡族群的平均薪水滿意度為？
 
