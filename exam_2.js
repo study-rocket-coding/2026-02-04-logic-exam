@@ -279,3 +279,63 @@ const d = () => {
 
 // 呼叫函式
 d();
+
+/*
+題目五
+subject：各產業的實體與遠端人數
+
+output：
+{
+    "教育產業":{
+      "實體辦公室" : "20間",
+      "遠端工作": "2間"
+    },
+    "數位整合行銷":{
+      "實體辦公室" : "20間",
+      "遠端工作": "2間"
+    }
+    
+    ...全數列出
+}
+*/
+
+// 宣告題目要求的函式
+const e = () => {
+  // 先用 reduce 統計各產業各工作數量
+  const totalCount = users.reduce((acc, user) => {
+    const industry = user.company.industry;
+    const work = user.company.work;
+
+    // 如果還沒有這個產業，先建立空物件
+    if (!acc[industry]){ acc[industry] = {}; }
+
+    // 計數
+    // 這裡 industry、work 是變數，代表不同的產業或工作類型，因為每次值都不同，需要動態取值 → 中括號 [] 記法
+    // 點號（.）記法：屬性名稱固定，不能用變數
+    acc[industry][work] = (acc[industry][work] || 0) + 1;
+
+    return acc;
+
+    // 初始值為空物件 {}
+  }, {});
+
+  // 再用 reduce 生成最後格式（加上 "間"）
+  const result = Object.keys(totalCount).reduce((acc, industry) => {
+    const workObj = totalCount[industry];
+
+    acc[industry] = Object.keys(workObj).reduce((workAcc, workType) => {
+      workAcc[workType] = `${workObj[workType]} 間`;
+      return workAcc;
+    }, {});
+
+    return acc;
+
+    // 初始值為空物件 {}
+  }, {});
+
+  // 印出結果
+  console.log(result);
+};
+
+// 呼叫函式
+e();
