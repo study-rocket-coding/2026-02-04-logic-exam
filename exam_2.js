@@ -339,3 +339,97 @@ const e = () => {
 
 // 呼叫函式
 e();
+
+/*
+題目六
+subject：各產業的男女性比例，與產業滿意度
+
+output：
+{
+    "教育產業":{
+      "男性比例" : "40%",
+      "女性比例":"60%"
+      "男性產業滿意度": "3.8分",
+      "女性產業滿意度": "5.5分"
+    },
+    "數位整合行銷":{
+      "男性比例" : "50%",
+      "女性比例":"50%"
+      "男性產業滿意度": "4.8分",
+      "女性產業滿意度": "7.5分"
+    }
+    
+    ...全數列出
+}
+*/
+
+// 宣告題目要求的函式
+const f = () => {
+  
+  // 先做資料統計
+  const temp = users.reduce((acc, user) => {
+    const industry = user.company.industry;
+    const gender = user.gender;
+    const score = Number(user.company.score); // 資料給的是字串，Number 轉成數字型別
+
+    // 如果還沒有這個產業，先建立預設物件
+    if (acc[industry] === undefined) {
+      acc[industry] = {
+        maleCount: 0,
+        femaleCount: 0,
+        maleScoreTotal: 0,
+        femaleScoreTotal: 0,
+      };
+    }
+
+    // 判斷性別
+    if (gender === "男性") {
+      acc[industry].maleCount += 1;
+      acc[industry].maleScoreTotal += score;
+    } else if (gender === "女性") {
+      acc[industry].femaleCount += 1;
+      acc[industry].femaleScoreTotal += score;
+    }
+
+    return acc;
+
+    // 初始值為空物件 {}
+    }, {});
+
+  const result = {};
+
+  // Object.keys 只拿「第一層 key」、回傳陣列
+  Object.keys(temp).forEach((industry) => {
+    const maleCount = temp[industry].maleCount;
+    const femaleCount = temp[industry].femaleCount;
+    const total = maleCount + femaleCount;
+
+    // 計算數字，並處理可能為 0 的情況
+    // NaN 出現的核心條件： 0 / 0
+    // 分母 ≠ 0 → 安全
+    // 分子 = 0 → 結果就是 0
+    const malePercent = (total === 0) ? 0 : (maleCount / total) * 100;
+    const femalePercent = (total === 0) ? 0 : (femaleCount / total) * 100;
+
+    // 平均分數，沒人就用 null
+    const maleAvg =
+      (maleCount === 0) ? null : temp[industry].maleScoreTotal / maleCount;
+    const femaleAvg =
+      (femaleCount === 0) ? null : temp[industry].femaleScoreTotal / femaleCount;
+
+    // result 格式化輸出
+    // .toFixed()  把數字「格式化」成「指定小數位數的"字串"」
+    result[industry] = {
+      男性比例: malePercent.toFixed(0) + "%",
+      女性比例: femalePercent.toFixed(0) + "%",
+      男性產業滿意度: maleAvg === null ? "0分" : maleAvg.toFixed(1) + "分",
+      女性產業滿意度: femaleAvg === null ? "0分" : femaleAvg.toFixed(1) + "分",
+    };
+  });
+
+  // 印出結果
+  console.log(result);
+}
+
+// 呼叫函式
+f();
