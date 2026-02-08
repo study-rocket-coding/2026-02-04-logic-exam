@@ -433,3 +433,94 @@ const f = () => {
 
 // 呼叫函式
 f();
+
+/*
+題目七
+subject：各年資的實體與遠端工作，平均薪水滿意度為？
+
+output：
+[
+    {
+    "工作經驗1年以下":{
+       "實體辦公室的平均薪水滿意度" : "6.6分",
+      "遠端工作的平均薪水滿意度": "8.8分"
+     }
+    },
+    {
+    "工作經驗2~3年以下":{
+       "實體辦公室的平均薪水滿意度" : "3.6分",
+      "遠端工作的平均薪水滿意度": "1.8分"
+     }
+    }    
+]
+*/
+
+// 宣告題目要求的函式
+const g = () => {
+
+  // 先做資料統計
+  const temp = users.reduce((acc, user) => {
+    const tenure = user.company.job_tenure;
+    const work = user.company.work;
+    const score = Number(user.company.score); // 資料給的是字串，Number 轉成數字型別
+
+    // 忽略空值或無效的年資
+    if (!tenure) return acc; // ""、null、undefined 都會被過濾掉
+
+    // 如果還沒有這個產業，先建立預設物件
+    if (acc[tenure] === undefined) {
+      acc[tenure] = {
+        officeCount: 0,
+        remoteCount: 0,
+        officeScoreTotal: 0,
+        remoteScoreTotal: 0,
+      };
+    }
+
+    // 判斷工作型態
+    if (work === "實體辦公室") {
+      acc[tenure].officeCount += 1;
+      acc[tenure].officeScoreTotal += score;
+    } else if (work === "遠端工作") {
+      acc[tenure].remoteCount += 1;
+      acc[tenure].remoteScoreTotal += score;
+    }
+
+    return acc;
+
+    // 初始值為空物件 {}
+  }, {});
+
+  const result = [];
+
+  // Object.keys 只拿「第一層 key」、回傳陣列
+  Object.keys(temp).forEach((tenure) => {
+    const officeCount = temp[tenure].officeCount;
+    const remoteCount = temp[tenure].remoteCount;
+    const officeScoreTotal = temp[tenure].officeScoreTotal;
+    const remoteScoreTotal = temp[tenure].remoteScoreTotal;
+
+    // 計算平均薪水滿意度，並處理可能為 0 的情況
+    // NaN 出現的核心條件： 0 / 0
+    // 分母 ≠ 0 → 安全
+    // 分子 = 0 → 結果就是 0
+    const officeAvg =
+      (officeCount === 0) ? null : officeScoreTotal / officeCount;
+    const remoteAvg =
+      (remoteCount === 0) ? null : remoteScoreTotal / remoteCount;
+
+    // 推進陣列，key 加上前綴 "工作經驗"
+    result.push({
+      ["工作經驗" + tenure]: {
+        實體辦公室的平均薪水滿意度: officeAvg === null ? "0分" : officeAvg.toFixed(1) + "分",
+        遠端工作的平均薪水滿意度: remoteAvg === null ? "0分" : remoteAvg.toFixed(1) + "分",
+      }
+    });
+  });
+
+  // 印出結果
+  console.log(result);
+}
+
+// 呼叫函式
+g();
