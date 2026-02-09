@@ -3,12 +3,12 @@
 // 2. 物件中的 key 種類眾多，看起來偏向「使用者（User）」資料
 // 3. 結合上述兩點，將整包資料命名為 `users`（複數），表示多個使用者資料的集合
 
-
 // 將 URL 抽成一個「常數」變數：
 // 1. 全大寫並用底線分隔
 // 2. 看到這種格式的命名，就會知道這變數「恆常不變」
 // 3. 方便日後維護（只要修改值就好）
-const API_URL = "https://raw.githubusercontent.com/hexschool/2021-ui-frontend-job/master/frontend_data.json";
+const API_URL =
+  "https://raw.githubusercontent.com/hexschool/2021-ui-frontend-job/master/frontend_data.json";
 
 // 定義主要函式：
 // 1. 這個函式只做「一件事」：取得多個使用者資料
@@ -32,7 +32,7 @@ const getUsers = async () => {
 
     // 回傳解析後的 JSON 資料
     return json;
-  } catch(error) {
+  } catch (error) {
     // 如果發生錯誤，將錯誤訊息輸出到主控台（Console）
     console.log(error);
 
@@ -69,7 +69,6 @@ output：
 
 // 宣告題目要求的函式
 const a = () => {
-
   // a 這個函式會包含數個邏輯與步驟，為避免讓函式過長、難以閱讀，我個人習慣：
   // 1. 用「三個部分」來組織程式碼
   // 2. 用「小函式」來拆解邏輯，且每個函式只做「一件事」
@@ -123,7 +122,7 @@ const a = () => {
 
       return obj;
 
-    // 初始值為空物件 {}
+      // 初始值為空物件 {}
     }, {});
 
     return countedEducations;
@@ -163,7 +162,6 @@ output：
 
 // 宣告題目要求的函式
 const b = () => {
-
   // 計算總人數
   const total = users.length;
 
@@ -182,12 +180,11 @@ const b = () => {
   // map 只能用在「陣列」上，先把「物件 → 陣列」
   // Object.keys 只拿「第一層 key」、回傳陣列
   const result = Object.keys(areaCount).map((area) => {
-
     // Math.round 把數字「四捨五入」成最接近的整數
     const percent = Math.round((areaCount[area] / total) * 100);
 
     return {
-      [area]: `${percent}%`
+      [area]: `${percent}%`,
     };
   });
 
@@ -204,23 +201,20 @@ subject：26~30 年齡族群的平均薪水滿意度為？
 
 output：
 {
- average: 7.7   
+  average: 7.7   
 }
 */
 
 // 宣告題目要求的函式
 const c = () => {
-
   // 挑出符合年齡的資料
-  const ageData = users.filter((user) => user.age === '26~30 歲');
-  
+  const ageData = users.filter((user) => user.age === "26~30 歲");
+
   // 加總符合年齡的資料薪資滿意度
-  const total = ageData.reduce((acc, user) => {
-
-    return acc + Number(user.company.salary_score);
-
-    // 初始值為 0
-  }, 0);
+  const total = ageData.reduce(
+    (acc, user) => acc + Number(user.company.salary_score),
+    0,
+  );
 
   // 符合年齡的資料數量
   const count = ageData.length;
@@ -229,12 +223,12 @@ const c = () => {
   const average = total / count;
 
   const result = {
-    average: average,   
+    average,
   };
 
   // 印出結果
   console.log(result);
-}
+};
 
 // 呼叫函式
 c();
@@ -245,37 +239,34 @@ subject：產業簽到區有寫與沒寫的人數比例為？
 
 output：
 [
-    ["有寫333人",{
-     no:"沒寫200人"
+    ["有寫333人", {
+      no:"沒寫200人"
     }]
 ]
 */
 
 // 宣告題目要求的函式
 const d = () => {
-  const count = users.reduce((acc, user) => {
+  const count = users.reduce(
+    (acc, user) => {
+      if (user.company.industry_message === "") {
+        acc.withoutMessage += 1;
+      } else {
+        acc.withMessage += 1;
+      }
 
-    if (user.company.industry_message === ''){
-      acc.withoutMessage += 1;
-    }
-    else {
-      acc.withMessage += 1;
-    }
-
-    return acc;
-
-  }, { withMessage: 0, withoutMessage: 0 });
+      return acc;
+    },
+    { withMessage: 0, withoutMessage: 0 },
+  );
 
   const result = [
-    [
-      `有寫 ${count.withMessage} 人`,
-      { no: `沒寫 ${count.withoutMessage} 人` }
-    ]
+    [`有寫 ${count.withMessage} 人`, { no: `沒寫 ${count.withoutMessage} 人` }],
   ];
 
   // 印出結果
   console.log(result);
-}
+};
 
 // 呼叫函式
 d();
@@ -307,7 +298,9 @@ const e = () => {
     const work = user.company.work;
 
     // 如果還沒有這個產業，先建立空物件
-    if (!acc[industry]){ acc[industry] = {}; }
+    if (!acc[industry]) {
+      acc[industry] = {};
+    }
 
     // 計數
     // 這裡 industry、work 是變數，代表不同的產業或工作類型，因為每次值都不同，需要動態取值 → 中括號 [] 記法
@@ -365,7 +358,6 @@ output：
 
 // 宣告題目要求的函式
 const f = () => {
-  
   // 先做資料統計
   const temp = users.reduce((acc, user) => {
     const industry = user.company.industry;
@@ -394,7 +386,7 @@ const f = () => {
     return acc;
 
     // 初始值為空物件 {}
-    }, {});
+  }, {});
 
   const result = {};
 
@@ -408,14 +400,14 @@ const f = () => {
     // NaN 出現的核心條件： 0 / 0
     // 分母 ≠ 0 → 安全
     // 分子 = 0 → 結果就是 0
-    const malePercent = (total === 0) ? 0 : (maleCount / total) * 100;
-    const femalePercent = (total === 0) ? 0 : (femaleCount / total) * 100;
+    const malePercent = total === 0 ? 0 : (maleCount / total) * 100;
+    const femalePercent = total === 0 ? 0 : (femaleCount / total) * 100;
 
     // 平均分數，沒人就用 null
     const maleAvg =
-      (maleCount === 0) ? null : temp[industry].maleScoreTotal / maleCount;
+      maleCount === 0 ? null : temp[industry].maleScoreTotal / maleCount;
     const femaleAvg =
-      (femaleCount === 0) ? null : temp[industry].femaleScoreTotal / femaleCount;
+      femaleCount === 0 ? null : temp[industry].femaleScoreTotal / femaleCount;
 
     // result 格式化輸出
     // .toFixed()  把數字「格式化」成「指定小數位數的"字串"」
@@ -429,7 +421,7 @@ const f = () => {
 
   // 印出結果
   console.log(result);
-}
+};
 
 // 呼叫函式
 f();
@@ -441,23 +433,22 @@ subject：各年資的實體與遠端工作，平均薪水滿意度為？
 output：
 [
     {
-    "工作經驗1年以下":{
-       "實體辦公室的平均薪水滿意度" : "6.6分",
-      "遠端工作的平均薪水滿意度": "8.8分"
-     }
+      "工作經驗1年以下": {
+        "實體辦公室的平均薪水滿意度" : "6.6分",
+        "遠端工作的平均薪水滿意度": "8.8分"
+      }
     },
-    {
-    "工作經驗2~3年以下":{
-       "實體辦公室的平均薪水滿意度" : "3.6分",
-      "遠端工作的平均薪水滿意度": "1.8分"
-     }
+      {
+      "工作經驗2~3年以下": {
+        "實體辦公室的平均薪水滿意度" : "3.6分",
+        "遠端工作的平均薪水滿意度": "1.8分"
+      }
     }    
 ]
 */
 
 // 宣告題目要求的函式
 const g = () => {
-
   // 先做資料統計
   const temp = users.reduce((acc, user) => {
     const tenure = user.company.job_tenure;
@@ -504,23 +495,23 @@ const g = () => {
     // NaN 出現的核心條件： 0 / 0
     // 分母 ≠ 0 → 安全
     // 分子 = 0 → 結果就是 0
-    const officeAvg =
-      (officeCount === 0) ? null : officeScoreTotal / officeCount;
-    const remoteAvg =
-      (remoteCount === 0) ? null : remoteScoreTotal / remoteCount;
+    const officeAvg = officeCount === 0 ? null : officeScoreTotal / officeCount;
+    const remoteAvg = remoteCount === 0 ? null : remoteScoreTotal / remoteCount;
 
     // 推進陣列，key 加上前綴 "工作經驗"
     result.push({
       ["工作經驗" + tenure]: {
-        實體辦公室的平均薪水滿意度: officeAvg === null ? "0分" : officeAvg.toFixed(1) + "分",
-        遠端工作的平均薪水滿意度: remoteAvg === null ? "0分" : remoteAvg.toFixed(1) + "分",
-      }
+        實體辦公室的平均薪水滿意度:
+          officeAvg === null ? "0分" : officeAvg.toFixed(1) + "分",
+        遠端工作的平均薪水滿意度:
+          remoteAvg === null ? "0分" : remoteAvg.toFixed(1) + "分",
+      },
     });
   });
 
   // 印出結果
   console.log(result);
-}
+};
 
 // 呼叫函式
 g();
